@@ -2,9 +2,9 @@ package com.tapsense.optighost;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import com.tapsense.optighost.R;
 
@@ -67,10 +67,10 @@ public class MainActivity extends Activity {
 					charEntered.append((char) (position + 97));
 					mGameWord = gameTextEntered.getText().toString()
 							+ ((char) (position + 97));
-					gameTextEntered.setText(mGameWord.toUpperCase());
+					gameTextEntered.setText(mGameWord.toUpperCase(Locale.US));
 					charactersEntered++;
-					if (!CheckIfGameHasEnded(mGameWord.toLowerCase()))
-						GetMeAllTheWords(mGameWord.toLowerCase());
+					if (!CheckIfGameHasEnded(mGameWord.toLowerCase(Locale.US)))
+						GetMeAllTheWords(mGameWord.toLowerCase(Locale.US));
 
 				}
 
@@ -92,22 +92,13 @@ public class MainActivity extends Activity {
 		protected Void doInBackground(Void... params) {
 
 			Log.d("MAIN ACTIVITY", "entered the asynctask");
-			String[] dictionary = null;
-			Log.d("MAIN ACTIVITY", "entered to read the file");
 
 			AssetManager assetManager = mContext.getAssets();
-			String[] txtFiles = null;
 			String word;
-			try {
-				txtFiles = assetManager.list("TextFiles");
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
 
 			buildingDataStructure = new TrieDataStructure();
 			rootNode = buildingDataStructure.createTree();
 			buildingDataStructure.clearWordsList();
-			// StringBuilder dictionaryBuilder = new StringBuilder();
 
 			try {
 				BufferedReader wordsReader = new BufferedReader(
@@ -140,8 +131,9 @@ public class MainActivity extends Activity {
 		}
 		buildingDataStructure.printTree(currNode, level, branch, enteredWord);
 
-		for (String str : buildingDataStructure.getAllWordsList())
-			Log.d("MAIN ACTIVITY", str);
+//		for (String str : buildingDataStructure.getAllWordsList())
+//			Log.d("MAIN ACTIVITY", str);
+		
 		PickAWordFromTheList(buildingDataStructure.getAllWordsList());
 
 	}
@@ -170,7 +162,7 @@ public class MainActivity extends Activity {
 			buildingDataStructure.clearWordsList();
 			if (!CheckIfGameHasEnded(wordPicked.substring(0, charactersEntered)))
 				gameTextEntered.setText(wordPicked.substring(0,
-						charactersEntered).toUpperCase());
+						charactersEntered).toUpperCase(Locale.US));
 
 		}
 
@@ -189,8 +181,8 @@ public class MainActivity extends Activity {
 
 		buildingDataStructure.printTree(currNode, level, branch, enteredWord);
 
-		for (String str : buildingDataStructure.getAllWordsList())
-			Log.d("MAIN ACTIVITY", "CHECK WHO WON: " + str);
+//		for (String str : buildingDataStructure.getAllWordsList())
+//			Log.d("MAIN ACTIVITY", "CHECK WHO WON: " + str);
 
 		if (buildingDataStructure.getAllWordsList().isEmpty()) {
 			if (charactersEntered % 2 == 0) {
@@ -217,7 +209,7 @@ public class MainActivity extends Activity {
 			titleMsg = "Restart";
 			break;
 		case 101:
-			dialogMsg = mGameWord.toUpperCase()
+			dialogMsg = mGameWord.toUpperCase(Locale.US)
 					+ " is not a meaningful word. \nRestarting the game.";
 			titleMsg = "Oops!";
 			break;

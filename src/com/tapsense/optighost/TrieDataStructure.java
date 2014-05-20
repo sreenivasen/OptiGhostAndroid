@@ -1,7 +1,6 @@
 package com.tapsense.optighost;
 
 import java.util.ArrayList;
-import android.util.Log;
 
 public class TrieDataStructure {
 
